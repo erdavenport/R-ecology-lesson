@@ -1,5 +1,5 @@
 ---
-title: "SQL databases and R"
+title: "Writing reproducible reports with R Markdown"
 author: Data Carpentry contributors
 ---
 
@@ -14,6 +14,7 @@ if (file.exists("portalR.db")) file.remove("portalR.db")
 > * Learn the basics of Markdown syntax
 > * Learn how to generate reproducible reports that display your code and results
 > * Learn how format chunks in R Markdown to display only the information you want to display.
+> * Learn how to specify tables of contents and output styles for writing R Markdown reports.
 
 ------------
 
@@ -310,7 +311,7 @@ summary(cars)
 
 
 Let's add a new chunk to end this demo document. 
-To do so, either you can enter three backticks in a row, followed by {r}, or you can click on the green `Chunks` button and chose `Insert Chunk`.
+To do so, either you can enter three backticks in a row, followed by {r}, or you can click on the green `Chunks` button.
 Additionally, there's a keyboard short cut which is `ctrl`+`alt`+`i` which will also pop up a chunk in an R Markdown document. 
 
 ![Insert Chunk](img/insert-chunk.png)
@@ -429,5 +430,238 @@ Rendered:
 
 The _cars_ dataset included in this analysis contains records for `r dim(cars)[1]` cars. 
 
+# R Markdown Output Options
+
+Let's start assembling our ecology code into a R Markdown file so we can generate a report of some of our analyses. 
+First, let's create a new R Markdown document with the title "On the origin of my dissertation".
+Once you create the R Marktown document, delete all of the demo contents below the header information. 
+Let's save this file as `ecology_analyses.Rmd` in the `data-carpentry` directory.
+
+![Start of New R Markdown Document](img/start-of-rmd.png)
+
+Let's start by loading our data. 
+First, using a single hashtag header level, let's indicate we're going to load data in Markdown.
+Next, let's create a new chunk that loads the data. 
+In this chunk, let's load our data.
+Additionally, let's name the chunk `data_load`.
+
+<pre><code>```{r data_load}
+surveys_raw <- read.csv("https://ndownloader.figshare.com/files/2292172")
+```</code></pre>
+
+Next, let's add a section on cleaning the data for plotting. 
+Using a single hastag header level, let's indicate we're going to "Clean the data"" using Markdown.
+
+Let's load the libraries we'll need to clean the data and plot it:
+
+<pre><code>```{r load_libraries}
+library(ggplot2)
+library(magrittr)
+library(dplyr)
+```</code></pre>
+
+Next, include text that says we are going to remove any entries with missing species_id, weights, or hindfoot_lengths. 
+Below that, add a chunk that does this filtering. 
+
+<pre><code>```{r filter_data}
+surveys_complete <- surveys_raw %>%
+                    filter(species_id != "") %>%        # remove missing species_id
+                    filter(!is.na(weight)) %>%          # remove missing weight
+                    filter(!is.na(hindfoot_length))     # remove missing hindfoot_length
+```</code></pre>
+
+Indicate that you are going to remove species with low counts and include the chunk of code to do that:
+
+<pre><code>```{r remove_rare_species}
+species_counts <- surveys_complete %>%
+                  group_by(species_id) %>%
+                  tally
+
+head(species_counts)
+
+frequent_species <- species_counts %>%
+                    filter(n >= 10) %>%
+                    select(species_id)
+
+surveys_complete <- surveys_complete %>%
+           filter(species_id %in% frequent_species$species_id)
+```</code></pre>
+
+Next, let's add a section on exploring the data.
+Add a another single hashtag header to write "Exploring the data". 
+
+Let's plot a boxplot of the distribution of hindfood lengths within each species:
+<pre><code>```{r hindfoot_boxplot}
+ggplot(data = surveys_complete, aes(x = species_id, y = hindfoot_length)) +
+    geom_boxplot()
+```</code></pre>
+
+Let's now click the Knit HTML button and take a look at our report.
+
+This is a good start to an R Markdown file for our analyses, but there are some additional features we can use when outputting the rendered HTML. 
+
+First, you can add a table of contents that with automatically reference your headers.
+To do so, you need to edit the header so that under the `html_document:` line it says `toc: true`:
+
+```
+---
+title: "On the origin of my dissertation"
+author: "H. Potter"
+date: "December 31, 1999"
+output:
+  html_document:
+    toc: true
+---
+```
+
+Knit the document and notice you now have links to the top for each of your sections. 
+Additionally, you can number the sections by adding `number_sections` under the `html_document` line in the header:
+
+```
+---
+title: "On the origin of my dissertation"
+author: "H. Potter"
+date: "December 31, 1999"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+---
+```
+
+Note that if you have smaller headers within each section (two hashtags), the numbering will be heirarchical.
+
+
+In addition to creating a table of content, so you can also change the style of your document. 
+Themes are a way of updating colors and fonts which relies on the library from <http://bootswatch.com/>.
+Click on the link and search for a theme that you like.
+The themes included with RStudio are “default”, “cerulean”, “journal”, “flatly”, “readable”, “spacelab”, “united”, “cosmo”.
+To change the theme of your document, update the header under the html_document: line to include `theme`:
+
+```
+---
+title: "On the origin of my dissertation"
+author: "H. Potter"
+date: "December 31, 1999"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+    theme: cerulean
+---
+```
+
+R Markdown rendering is designed to make your code more readable.
+One of the things incorporated is syntax highlighting. 
+You can change the style of the syntax highlighting using the `highlight` argument in the header. 
+Your options to choose from are "default", "tango", "pygments", "kate", "monochrome", "espresso", "zenburn", "haddock", and "textmate".
+Try some different options and pick which one you like most. 
+
+```
+---
+title: "On the origin of my dissertation"
+author: "H. Potter"
+date: "December 31, 1999"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+    theme: cerulean
+    highlight: espresso
+---
+```
+
+
+
+In addition to the style of the text of your report, you can also control the style of the figures in your report. 
+You can set `fig_width` and `fig_height` in the header to set what size you want your images to appear.
+The default figure size is 7 inches wide by 5 inches tall.
+Let's try making ours wider and shorter by setting the width to be 10 inches and the height to be 3 inches:
+
+```
+---
+title: "On the origin of my dissertation"
+author: "H. Potter"
+date: "December 31, 1999"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+    theme: cerulean
+    highlight: espresso
+    fig_width: 10
+    fig_height: 3
+---
+```
+
+To create professional looking reports, you can also generate figure captions.
+To add a figure caption to a figure, you must specifiy in the brackets at the beginning of the chunk what you want the caption to say using the argument `fig.cap`. 
+Let's add a caption to our histogram by editing the `author_histogram` chunk:
+
+<pre><code>```{r hindfoot_boxplot, fig.cap="Figure 1: Hindfoot length within each species"}
+ggplot(data = surveys_complete, aes(x = species_id, y = hindfoot_length)) +
+    geom_boxplot()
+```</code></pre>
+
+
+Additionally, in the header you must specify `fig_caption: yes` under the `html_document` line.
+
+```
+---
+title: "On the origin of citations"
+author: "H. Potter"
+date: "December 31, 1999"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+    theme: cerulean
+    highlight: espresso
+    fig_width: 10
+    fig_height: 3
+    fig_caption: yes
+---
+```
+
+
+While it's nice to have all of your code and results in one place, sometimes you'll also want your figures printed to a separate file so that you can include them in manuscripts, presentations, or posters. 
+You can specify the `self_contained` option as false in the header, which will generate all the files used to render the HTML. 
+
+```
+---
+title: "On the origin of citations"
+author: "H. Potter"
+date: "December 31, 1999"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+    theme: cerulean
+    highlight: espresso
+    fig_width: 10
+    fig_height: 3
+    fig_caption: yes
+    self_contained: false
+---
+```
+
+Knit the document and then look in the project directory. 
+You can see there is a folder called `ecology_analyses_files`.
+In that folder is another directory called `figure-html`.
+In that folder you will see a file called `hindfoot-boxplot-1.png`, which is the name of the chunk that held the code to create the histogram followed by `-1`. 
+Although low resolution, this image could be emailed to collaborators or put in a presentation. 
+
+In addition to an HTML page, we can output our report to a word file. 
+Click the arrow next to the `Knit HTML` button and chose `Knit Word`. 
+
+
+> ## Update analysis file {.challenge}
+>
+> You need to share your initial results with your collaborators, but after showing your report to your boss, they had a few suggestions.
+>
+> 1. In your final report, your collaborators should see your boxplot of hindfoot lengths, but not the code that produced the plot.  
+> 2. The figure is hard to see as is, resize it to 8x8 inches
+> 3. Your collaborators are very interested in the distribution of weights across all species. Add another boxplot plotting the distributions of weights across the species, ensuring there are respectible titles and axis labels. Also, just like the previous figure, make sure there is a legend and that the code to generate the figure does not appear in the final report. 
+> 4. Additionally under the new figure, your collaborators should see a sentence that says "The total number of species examined is X", where X is the total number of species in the filtered dataset, as evaluated by inline code. 
 
 
