@@ -1,12 +1,13 @@
 ---
+layout: topic
 title: "Writing reproducible reports with R Markdown"
 author: Data Carpentry contributors
+minutes: 90
 ---
 
 
 ```{r, echo=FALSE, purl=FALSE, message = FALSE, results='hide'}
 source("setup.R")
-if (file.exists("portalR.db")) file.remove("portalR.db")
 ```
 
 > ## Learning Objectives
