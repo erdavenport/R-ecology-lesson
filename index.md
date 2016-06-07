@@ -50,6 +50,8 @@ for each level and a very brief introduction to plotting.
 5. [Lesson 04 Aggregating and analyzing data with dplyr](04-dplyr.html)
 6. [Lesson 05 Data visualization with ggplot2](05-visualization-ggplot2.html)
 7. [Lesson 06 R and SQL](06-r-and-sql.html)
+8. [Lesson 07 R Markdown for reproducible reports](07-r-markdown.html)
+9. [Lesson 08 Loops and Functions](08-loops-and-functions.html)
 
 
 ## Data
