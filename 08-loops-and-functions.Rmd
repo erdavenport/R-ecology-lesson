@@ -24,8 +24,12 @@ All of the scales had not been calibrated, and we need to increase the weights o
 How can we go through and update our table? 
 
 First, make sure you have the `surveys` dataset loaded:
-```{r data_load}
-surveys <- read.csv('data/portal_data_joined.csv')
+```{r data_load, eval=FALSE}
+surveys <- read.csv('data/svy_complete.csv')
+```
+
+```{r echo=FALSE}
+surveys <- read.csv("https://raw.githubusercontent.com/erdavenport/2016-06-13-cornell/gh-pages/data/svy_complete.csv")
 ```
 
 We'll be using the `dplyr` and `ggplot2` packages, so load them as well:
@@ -57,7 +61,21 @@ if (surveys$year[1] == 1984) {
 }
 ```
 
+
 This may seem like a trivial example, but having the power to make R do one thing when one condition is met, and another thing when a different condition is met is very powerful. 
+
+### Challenge
+Let's say we're interested in knowing whether an animal is large or not, with a cut-off of at least one ounce.
+Write an `if/else` statement that evaluates whether the first animal in our data is larger than an ounce. 
+(Hint: one ounce is 28.3g)
+
+```{r include=FALSE}
+if (surveys$weight[1] > 28.3) {
+    print("It's a monster")
+} else {
+    print("It's little")
+}
+```
 
 # Loops
 
@@ -177,7 +195,7 @@ for (i in 1:dim(surveys_adjusted)[1]) {
 }
 ```
 
-Great, so we can see that for values of `weight` where a number was recorded, we see an adjusted value but for values of `weight` where a number was not entered, it returns an `NA`.
+Great, so we can see that for values of `weight` where a number was recorded, we see an adjusted value but for values of `weight`.
 This is fine, but we really want to edit the values of weight in our `surveys_adjusted` table so that we can use them in further analysis. 
 In the loop, we can assign these new values back to their corresponding cell:
 
@@ -225,18 +243,49 @@ Putting quotes around each cell is the default and can be beneficial if you have
 
 Let's save our adjusted data to our data folder:
 
-```{r}
+```{r eval=FALSE}
 write.table(surveys_adjusted, "data/survey_data_1984_weights_adjusted.csv", sep=",", row.names=FALSE, quote=FALSE)
 ```
 
 Now we have a copy of this adjusted data we can use later.
 To check that it saved and you can load it again into R, load it using `read.csv`, but save it to a different variable name:
 
-```{r}
+```{r eval=FALSE}
 surveys_adjusted_from_file <- read.csv("data/survey_data_1984_weights_adjusted.csv")
 ```
 
 Voila!
+
+### Challenges:
+1. Using a `for` loop, using an `if/else` statement, and without using `dplyr`, tally the number of animals that weigh over an ounce in our dataset. 
+
+```{r include=FALSE}
+number_of_big_animals = 0
+for (i in 1:dim(surveys)[1]) {
+    if (surveys$weight[i] >= 28.3) {
+        number_of_big_animals <- number_of_big_animals + 1
+    }
+}
+```
+
+2. For the animals that are not over an ounce in weight, how many of them are female and how many of them are male?
+
+```{r include=FALSE}
+number_of_big_animals = 0
+number_of_small_f = 0
+number_of_small_m = 0
+for (i in 1:dim(surveys)[1]) {
+    if (surveys$weight[i] >= 28.3) {
+        number_of_big_animals <- number_of_big_animals + 1
+    } else {
+        if (surveys$sex[i] == "F") {
+            number_of_small_f <- number_of_small_f + 1
+        } else {
+            number_of_small_m <- number_of_small_m + 1
+        }
+    }
+}
+```
 
 # Functions
 
@@ -312,4 +361,22 @@ for (i in 1:dim(surveys_adjusted)[1]) {
 
 Now, if our collaborator comes back to us for a third time, we only have to alter the `convert_1984` function once, rather than trying to remember every place we converted data in our script.
 A general rule of thumb is if you're going to need to do something more than once, try to put it in a function!
+
+### Challenges:
+Your collaborator tells you that you can use the length of the hindfoot to calculate brain volume. 
+Apparently the hindfoot of these creatures is equal to the diameter of their skulls.
+Write a function that will calculate the volume of the animals skulls and apply it to this dataset. 
+Hint: the volume of a sphere is 4/3 \* pi \* r^3
+
+```{r include=FALSE}
+find_skull_volume <- function(diam) {
+    radius <- diam/2
+    vol <- 4/3*3.14*(radius^3)
+    return(vol)
+}
+skull_volume <- c()
+for (i in 1:dim(surveys)[1]) {
+    skull_volume <- c(skull_volume, find_skull_volume(surveys$hindfoot_length[i]))
+}
+```
 
