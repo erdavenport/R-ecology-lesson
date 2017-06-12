@@ -31,6 +31,7 @@ how to work with databases directly from R.
 1. [Before we start](00-before-we-start.html)
 2. [Introduction to R](01-intro-to-r.html)
 3. [Starting with data](02-starting-with-data.html)
+4. [Loops and functions](03-loops-and-functions.html)
 4. [Aggregating and analyzing data with dplyr](03-dplyr.html)
 5. [Data visualization with **`ggplot2`**](04-visualization-ggplot2.html)
 6. [R and Databases](05-r-and-databases.html)
