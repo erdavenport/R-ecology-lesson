@@ -13,11 +13,11 @@ skeleton-%.R: %.Rmd _site.yml
 %.html: %.md
 	Rscript -e "rmarkdown::render_site(input='$<')"
 
-code-handout.R: skeleton-00-before-we-start.R skeleton-01-intro-to-r.R skeleton-02-starting-with-data.R skeleton-03-dplyr.R skeleton-04-visualization-ggplot2.R skeleton-05-r-and-databases.R
+code-handout.R: skeleton-00-before-we-start.R skeleton-01-intro-to-r.R skeleton-02-starting-with-data.R skeleton-03-loops-and-functions.R skeleton-04-dplyr.R skeleton-05-visualization-ggplot2.R
 	for f in $^; do cat $$f; echo "\n"; done > $@
 	make clean-skeleton
 
-pages: 00-before-we-start.html 01-intro-to-r.html 02-starting-with-data.html 03-dplyr.html 04-visualization-ggplot2.html 05-r-and-databases.html index.html LICENSE.html CITATION.html CONTRIBUTING.html CONDUCT.html
+pages: 00-before-we-start.html 01-intro-to-r.html 02-starting-with-data.html 03-loops-and-functions.html 04-dplyr.html 05-visualization-ggplot2.html index.html LICENSE.html CITATION.html CONTRIBUTING.html CONDUCT.html
 	make clean-md
 
 check-spelling:

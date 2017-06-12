@@ -31,7 +31,7 @@ surveys <- read.csv("data/portal_data_joined.csv")
 
 ------------
 
-# Data Manipulation using **`dplyr`** and **`tidyr`**
+## Data manipulation using **`dplyr`** and **`tidyr`**
 
 Bracket subsetting is handy, but it can be cumbersome and difficult to read,
 especially for complicated operations. Enter **`dplyr`**. **`dplyr`** is a package for
@@ -134,7 +134,7 @@ surveys_sml
 
 Note that the final data frame is the leftmost part of this expression.
 
-> ### Challenge {.challenge}
+> #### Challenge {.challenge}
 >
 >  Using pipes, subset the `survey` data to include individuals collected before
 >  1995 and retain only the columns `year`, `sex`, and `weight`.
@@ -155,7 +155,7 @@ surveys %>%
 
     ```
 
-### Mutate
+## Mutate
 
 Frequently you'll want to create new columns based on the values in existing
 columns, for example to do unit conversions, or find the ratio of values in two
@@ -195,7 +195,7 @@ surveys %>%
 `is.na()` is a function that determines whether something is an `NA`. The `!`
 symbol negates the result, so we're asking for everything that *is not* an `NA`.
 
-> ### Challenge {.challenge}
+> #### Challenge {.challenge}
 >
 >  Create a new data frame from the `survey` data that meets the following
 >  criteria: contains only the `species_id` column and a new column called
@@ -228,7 +228,7 @@ surveys_hindfoot_half <- surveys %>%
 
     ```
 
-### Split-apply-combine data analysis and the summarize() function
+## Split-apply-combine data analysis and the summarize() function
 
 Many data analysis tasks can be approached using the *split-apply-combine*
 paradigm: split the data into groups, apply some analysis to each group, and
@@ -236,7 +236,7 @@ then combine the results. **`dplyr`** makes this very easy through the use of th
 `group_by()` function.
 
 
-#### The `summarize()` function
+### The `summarize()` function
 
 `group_by()` is often used together with `summarize()`, which collapses each
 group into a single-row summary of that group.  `group_by()` takes as arguments
@@ -307,7 +307,7 @@ surveys %>%
 ```
 
 
-#### Tallying
+## Tallying
 
 When working with data, it is also common to want to know the number of
 observations found for each factor or combination of factors. For this, **`dplyr`**
@@ -386,7 +386,7 @@ surveys %>%
 
 ```
 
-### Reshaping with gather and spread
+## Reshaping with gather and spread
 
 **`dplyr`** is one part of a larger **`tidyverse`** that enables you to work
 with data in tidy data formats. **`tidyr`** enables a wide range of
@@ -520,8 +520,7 @@ surveys_gw_wide %>%
 
 ```
 
-<!---
-  ```{r, echo=FALSE, purl=FALSE}
+```{r, echo=FALSE, purl=FALSE, include=FALSE}
 ## Answer 1
 rich_time <- surveys %>%
   group_by(plot_id, year) %>%
@@ -544,9 +543,8 @@ surveys_long %>%
   summarize(mean_value = mean(value, na.rm=TRUE)) %>%
   spread(measurement, mean_value)
 ```
---->
 
-# Exporting data
+## Exporting data
 
 Now that you have learned how to use **`dplyr`** to extract information from
 or summarize your raw data, you may want to export these new datasets to share

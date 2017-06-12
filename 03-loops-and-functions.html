@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Emily Davenport" />
+
+
+<title>Loops and Functions in R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="00-before-we-start.html">Before we start</a>
+</li>
+<li>
+  <a href="01-intro-to-r.html">Intro to R</a>
+</li>
+<li>
+  <a href="02-starting-with-data.html">Starting with data</a>
+</li>
+<li>
+  <a href="03-loops-and-functions.html">Loops and functions</a>
+</li>
+<li>
+  <a href="04-dplyr.html">Manipulating data frames</a>
+</li>
+<li>
+  <a href="05-visualization-ggplot2.html">Visualizing data</a>
+</li>
+<li>
+  <a href="code-handout.R">Code Handout</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/datacarpentry/R-ecology-lesson">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Loops and Functions in R</h1>
+<h4 class="author"><em>Emily Davenport</em></h4>
+
+</div>
+
+
+<hr />
+<blockquote>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Make decisions with <code>if</code> and <code>else</code> statements</li>
+<li>Use a <code>for</code> loop to repeat operations</li>
+<li>Incorporate functions to repeat operations</li>
+</ul>
+</blockquote>
+<hr />
+<div id="ifelse-statements" class="section level2">
+<h2>If/else statements</h2>
+<p>So far everything we have done, we’ve done by hand: calculate a single mean, plot a single plot, etc. The real power of R comes from getting R to automate repetitive tasks and to make decisions for you. We’ll start this lesson with this last idea: How can we have R make decisions for us?</p>
+<p>Let’s say that we discover from our collaborator that there was an issue in 1984. All of the scales had not been calibrated, and we need to increase the weights of any measurements made in that year by 10%. How can we go through and update our table?</p>
+<p>First, make sure you have the <code>surveys</code> dataset loaded:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">surveys &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/portal_data_joined.csv&quot;</span>)</code></pre></div>
+<p>I always like to start by quickly visualizing my data. Let’s make a quick histogram in R of the weights.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(surveys$weight, <span class="dt">main =</span> <span class="st">&quot;Distribution of weights&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;weight (g)&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</code></pre></div>
+<p><img src="img/R-ecology-unnamed-chunk-5-1.png" width="672" /></p>
+<p>Our weights are between 0-250g, which sounds about right for birds, rabbits, rodents, or small reptiles.</p>
+<p>Now let’s adjust all of our weight up by 10% if the measurement was taken in 1984.</p>
+<p>The first thing we’ll need to do is decide if a a weight was taken in 1984 or not. One way to do this is with an if/else statement.</p>
+<p>If/else statments take the following form. The <code>else</code> is optional:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (condition is <span class="ot">TRUE</span>) {
+  do something
+} else {
+  do different thing
+}</code></pre></div>
+<p>For example, we can check to see if the first entry in our <code>surveys</code> table is from 1984 or not:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (surveys$year[<span class="dv">1</span>] ==<span class="st"> </span><span class="dv">1984</span>) {
+    <span class="kw">print</span>(<span class="st">&quot;Great Scott, it&#39;s 1984!&quot;</span>)
+} else {
+    <span class="kw">print</span>(<span class="st">&quot;It&#39;s not 1984&quot;</span>)
+}</code></pre></div>
+<pre><code>#&gt; [1] &quot;It&#39;s not 1984&quot;</code></pre>
+<p>This may seem like a trivial example, but having the power to make R do one thing when one condition is met, and another thing when a different condition is met is very powerful.</p>
+<blockquote>
+<h3 id="challenge">Challenge</h3>
+<p>Let’s say we’re interested in knowing whether an animal is large or not, with a cut-off of at least one ounce. Write an <code>if/else</code> statement that evaluates whether the 40th animal in our data is larger than an ounce. (Hint: one ounce is 28.3g)</p>
+</blockquote>
+<!---
+
+-->
+</div>
+<div id="loops" class="section level2">
+<h2>Loops</h2>
+<p>We’ve set up an <code>if/else</code> statement to identify whether the first entry in our table is from 1984, but we want to know that information for all of the entries in our table. How can we make R look at each row and tell us if an entry is from 1984? Loops are a powerful tool that will let us repeat operations. For example, we can do <em>something</em> to every row of our dataframe. There are many type of loops, but today we will focus on the <code>for</code> loop. Here is the basic structure of a <code>for</code> loop:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (variable in vector) {
+  do something
+}</code></pre></div>
+<p>Using the names above, each iteration of <code>variable</code> takes the value of one of the elements of <code>vector</code>. Here’s one example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (i in <span class="dv">1</span>:<span class="dv">10</span>) {
+  <span class="kw">print</span>(i)
+}</code></pre></div>
+<pre><code>#&gt; [1] 1
+#&gt; [1] 2
+#&gt; [1] 3
+#&gt; [1] 4
+#&gt; [1] 5
+#&gt; [1] 6
+#&gt; [1] 7
+#&gt; [1] 8
+#&gt; [1] 9
+#&gt; [1] 10</code></pre>
+<p>And another:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (i in <span class="kw">c</span>(<span class="st">&quot;cat&quot;</span>, <span class="st">&quot;dog&quot;</span>, <span class="st">&quot;gerbil&quot;</span>)) {
+  <span class="kw">print</span>(i)
+}</code></pre></div>
+<pre><code>#&gt; [1] &quot;cat&quot;
+#&gt; [1] &quot;dog&quot;
+#&gt; [1] &quot;gerbil&quot;</code></pre>
+<p>Let’s use a loop to examine all of the years our <code>surveys</code> data was collected. Our loop will have the basic form:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (i in <span class="dv">1</span>:<span class="kw">dim</span>(surveys)[<span class="dv">1</span>]) {
+  
+}</code></pre></div>
+<p>What is that top line doing? Let’s start with <code>1:dim(surveys)[1]</code>. <code>dim(surveys)</code> will give you the dimensions of your table in rows by columns:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(surveys)</code></pre></div>
+<pre><code>#&gt; [1] 34786    13</code></pre>
+<p>You can see that our table has 34786 rows and 13 columns. Since we want to look at each row, we index <code>dim(surveys)</code> using <code>[1]</code> to just pull out the number of rows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(surveys)[<span class="dv">1</span>]</code></pre></div>
+<pre><code>#&gt; [1] 34786</code></pre>
+<p>The <code>:</code> will create a numeric list starting at the number before the colon and incrementing by one to the number after the colon. In our case, this will result in a list from 1 to 34786, incrementing by one. To demonstrate, here is the beginning…</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="dv">1</span>:<span class="kw">dim</span>(surveys)[<span class="dv">1</span>])</code></pre></div>
+<pre><code>#&gt; [1] 1 2 3 4 5 6</code></pre>
+<p>…and end of that list:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(<span class="dv">1</span>:<span class="kw">dim</span>(surveys)[<span class="dv">1</span>])</code></pre></div>
+<pre><code>#&gt; [1] 34781 34782 34783 34784 34785 34786</code></pre>
+<p>Putting that together with the <code>for</code> statement: For each row of our surveys table, our loop will execute the code we give it.</p>
+<p>Let’s add our if/else statment from above to our loop:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (i in <span class="dv">1</span>:<span class="kw">dim</span>(surveys)[<span class="dv">1</span>]) {
+    if (surveys$year[i] ==<span class="st"> </span><span class="dv">1984</span>) {
+      <span class="kw">print</span>(<span class="st">&quot;Great Scott, it&#39;s 1984!&quot;</span>)
+    } else {
+      <span class="kw">print</span>(<span class="st">&quot;It&#39;s not 1984.&quot;</span>)
+    }
+}</code></pre></div>
+<p>That printed many lines to our terminal, and you can see by scrolling up through them that some of them say it was 1984 and some of them don’t. This isn’t particularly useful output, but it can be beneficial to build up your loops in this way using print statements so you know your loop is behaving as you thought it would.</p>
+<p>Let’s now alter our script so that it increases the weights of any specimen measured in 1984 by 10%.</p>
+<p>The first thing we should do is make a copy of our dataset that we will alter. This way, if we make any mistakes we will not need to reload the whole dataset from the file in our <code>data</code> folder.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">surveys_adjusted &lt;-<span class="st"> </span>surveys</code></pre></div>
+<p>Now, let’s edit our loop to print out the new weight value for specimens measured in 1984:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (i in <span class="dv">1</span>:<span class="kw">dim</span>(surveys_adjusted)[<span class="dv">1</span>]) {
+    if (surveys_adjusted$year[i] ==<span class="st"> </span><span class="dv">1984</span>) {
+      <span class="kw">print</span>(surveys_adjusted$weight[i]*<span class="fl">1.1</span>)
+    } else {
+      <span class="kw">print</span>(<span class="st">&quot;It&#39;s not 1984.&quot;</span>)
+    }
+}</code></pre></div>
+<p>Since we aren’t actually changing the values for yeas other than 1984, let’s not print a message saying it isn’t 1984 to the terminal.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (i in <span class="dv">1</span>:<span class="kw">dim</span>(surveys_adjusted)[<span class="dv">1</span>]) {
+    if (surveys_adjusted$year[i] ==<span class="st"> </span><span class="dv">1984</span>) {
+      <span class="kw">print</span>(surveys_adjusted$weight[i]*<span class="fl">1.1</span>)
+    } 
+}</code></pre></div>
+<p>Great, so we can see that for values of <code>weight</code> where a number was recorded, we see an adjusted value but for values of <code>weight</code>. This is fine, but we really want to edit the values of weight in our <code>surveys_adjusted</code> table so that we can use them in further analysis. In the loop, we can assign these new values back to their corresponding cell:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (i in <span class="dv">1</span>:<span class="kw">dim</span>(surveys_adjusted)[<span class="dv">1</span>]) {
+    if (surveys_adjusted$year[i] ==<span class="st"> </span><span class="dv">1984</span>) {
+      surveys_adjusted$weight[i] &lt;-<span class="st"> </span>surveys_adjusted$weight[i]*<span class="fl">1.1</span>
+    } 
+}</code></pre></div>
+<p>This printed no output, because we removed the print statement, but the values of <code>weight</code> have increased by 10%. To see that this really happened, let’s look at the mean weight in 1984 in our original and adjusted datasets:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">original_1984_weight &lt;-<span class="st"> </span><span class="kw">mean</span>(surveys$weight[surveys$year ==<span class="st"> </span><span class="dv">1984</span>], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)
+original_1984_weight</code></pre></div>
+<pre><code>#&gt; [1] 50.95568</code></pre>
+<p>Now look at the weights in 1984 in the adjusted dataset:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">adjusted_1984_weight &lt;-<span class="st"> </span><span class="kw">mean</span>(surveys_adjusted$weight[surveys_adjusted$year ==<span class="st"> </span><span class="dv">1984</span>], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)
+adjusted_1984_weight</code></pre></div>
+<pre><code>#&gt; [1] 56.05125</code></pre>
+<p>Are these values 10% more than the original 1984 dataset?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">original_1984_weight *<span class="st"> </span><span class="fl">1.1</span></code></pre></div>
+<pre><code>#&gt; [1] 56.05125</code></pre>
+<p>Great, we have a dataset now where the weights have been adjusted in 1984. We may want to use this dataset in the future or give it to collaborators, so we should save this new dataset to a file.</p>
+<p>To save a table to a file, you can use the <code>write.table</code> function, which has the following syntax:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(table_variable, <span class="st">&quot;name_of_file_to_write_to&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">row.names=</span><span class="ot">FALSE</span>, <span class="dt">col.names=</span><span class="ot">FALSE</span>, <span class="dt">quote=</span><span class="ot">FALSE</span>)</code></pre></div>
+<p>The first arguement asks for the variable the table you wish to write out is stored. Then you give it the path and name of file you want to save it to. The <code>sep</code> arguement let’s you choose how you want the cells in your file to be delimited. Here, we’ve put a <code>,</code>, so this will create a <code>.csv</code> file. You could also put <code>sep=&quot;\t&quot;</code> for a tab-delimited file or <code>sep=&quot;\n&quot;</code> if you want each cell to be in it’s own row. The other three arguments above give instructions about whether you’d like to include the row names of the data, the column names of the data, and whether you’d like quotes to be put around each cell. Putting quotes around each cell is the default and can be beneficial if you have special characters or a lot of spaces and tabs within a cell, however, most of the time you will not need this and should set <code>quote=FALSE</code>, especially if you plan on opening the saved file in a program other than R.</p>
+<p>Let’s save our adjusted data to our data folder:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(surveys_adjusted, <span class="st">&quot;data/survey_data_1984_weights_adjusted.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">row.names=</span><span class="ot">FALSE</span>, <span class="dt">quote=</span><span class="ot">FALSE</span>)</code></pre></div>
+<p>Now we have a copy of this adjusted data we can use later. To check that it saved and you can load it again into R, load it using <code>read.csv</code>, but save it to a different variable name:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">surveys_adjusted_from_file &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/survey_data_1984_weights_adjusted.csv&quot;</span>)</code></pre></div>
+<p>Voila!</p>
+<blockquote>
+<h3 id="challenge-1">Challenge</h3>
+<ol style="list-style-type: decimal">
+<li>Using a <code>for</code> loop and an <code>if/else</code> statement, tally the number of animals that weigh over an ounce in our adjusted dataset. To get you started, here is code to create a data.frame where all recrods with <code>NA</code> for the weight are removed:</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">surveys_adj_no_na &lt;-<span class="st"> </span>surveys_adjusted[!<span class="kw">is.na</span>(surveys_adjusted$weight), ]</code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>For the animals that are not over an ounce in weight, how many of them are female and how many of them are male?</li>
+</ol>
+</blockquote>
+</div>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<p>Our collaborator has noticed more problems with the data. They were wrong about the calibration issues in 1984, and have told us to discard the updated table we made. However, they realize that the person who recorded the data in 1984 somehow transformed all of the data they collected - both the <code>weights</code> and the <code>hindfoot_length</code>. To get the correct values, we will need multiply the recorded values by 1.1245697375083747 and add 10 to both of those variables. Your collaborator is very insistant that you use all of the significant digits provided when you convert values!</p>
+<p>One way to do this could be two write two separate loops - one for each variable that needs to be changed. That would be a lot of code, however, and if our collaborator came back to us again with more instructions, we’d have to remember to change both loops.</p>
+<p>Another way would be to add a second line to the one loop we’ve already made, to change the <code>hindfoot_length</code> as well:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">surveys_adjusted &lt;-<span class="st"> </span>surveys
+for (i in <span class="dv">1</span>:<span class="kw">dim</span>(surveys)[<span class="dv">1</span>]) {
+    if (surveys$year[i] ==<span class="st"> </span><span class="dv">1984</span>) {
+      surveys_adjusted$weight[i] &lt;-<span class="st"> </span>surveys$weight[i]*<span class="fl">1.1245697375083747</span><span class="dv">+10</span>
+      surveys_adjusted$hindfoot_length[i] &lt;-<span class="st"> </span>surveys$hindfoot_length[i]*<span class="fl">1.1245697375093747</span><span class="dv">+10</span>
+    } 
+}</code></pre></div>
+<p>Do you see the problem above? While typing in that really long number, I accidently hit a 9 instead of an 8. Typos like these can happen anytime, and best practice is if you’re going to need to do something more than once, put it what’s called a <strong>function</strong>.</p>
+<p>R is full of functions. When you take an average <code>mean()</code>, find the dimensions of something <code>dim</code>, or anything else where you type a command followed immediately by paratheses you are calling a function. Many functions you would commonly use are built, but you can create custom functions to do anything you want. In this example, we have to multiply two different columns by a very long number and then add 10. We may want to put this in a function so that we don’t have to worry about typing the number multiple times and ending up with typos like we did above.</p>
+<p>How do we write a function? All functions in R have two parts: The input arguments and the body. When we define our own functions, they have the following syntax:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">function_name &lt;-<span class="st"> </span>function(args) {
+  body
+}</code></pre></div>
+<p>The arguments let us input variables into the function when it is run. The body is where we write the steps we want to follow to manipulate our data.</p>
+<p>For example, let’s create a function that will do the numerical conversion we need and call it <code>convert_1984</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">convert_1984 &lt;-<span class="st"> </span>function(myval) {
+  myval_adjusted &lt;-<span class="st"> </span>myval*<span class="fl">1.1245697375083747</span><span class="dv">+10</span>
+  <span class="kw">return</span>(myval_adjusted)
+}</code></pre></div>
+<p>This function will take in a value (<code>myval</code>), convert it by multiplying it by 1.1245697375083747 and adding 10, and return the adjusted value to the user. Let’s try it out on some numbers:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">convert_1984</span>(<span class="dv">1</span>)</code></pre></div>
+<pre><code>#&gt; [1] 11.12457</code></pre>
+<p>Now, let’s use this function in our loop to alter the values of <code>weight</code> and <code>hindfoot_length</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (i in <span class="dv">1</span>:<span class="kw">dim</span>(surveys)[<span class="dv">1</span>]) {
+    if (surveys$year[i] ==<span class="st"> </span><span class="dv">1984</span>) {
+      surveys_adjusted$weight[i] &lt;-<span class="st"> </span><span class="kw">convert_1984</span>(surveys$weight[i])
+      surveys_adjusted$hindfoot_length[i] &lt;-<span class="st"> </span><span class="kw">convert_1984</span>(surveys$hindfoot_length[i])
+    } 
+}</code></pre></div>
+<p>Now, if our collaborator comes back to us for a third time, we only have to alter the <code>convert_1984</code> function once, rather than trying to remember every place we converted data in our script. A general rule of thumb is if you’re going to need to do something more than once, try to put it in a function!</p>
+<blockquote>
+<h3 id="challenge-2">Challenge</h3>
+<p>Your collaborator tells you that you can use the length of the hindfoot to calculate brain volume. Apparently the hindfoot of these creatures is equal to the diameter of their skulls. Write a function that will calculate the volume of the animals skulls and apply it to this dataset. Hint: the volume of a sphere is <span class="math display">\[4/3 * \pi * r^3\]</span></p>
+</blockquote>
+</div>
+
+<hr/>
+
+<p><a href="http://datacarpentry.org/">Data Carpentry</a>,
+  2017. <a href="LICENSE.html">License</a>. <a href="CONTRIBUTING.html">Contributing</a>. <br/>
+  Questions?  Feedback?
+  Please <a href="https://github.com/datacarpentry/R-ecology-lesson/issues/new">file
+  an issue on GitHub</a>. <br/> On
+  Twitter: <a href="https://twitter.com/datacarpentry">@datacarpentry</a></p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -34,7 +34,6 @@ how to work with databases directly from R.
 4. [Loops and functions](03-loops-and-functions.html)
 4. [Aggregating and analyzing data with dplyr](04-dplyr.html)
 5. [Data visualization with **`ggplot2`**](05-visualization-ggplot2.html)
-6. [R and Databases](06-r-and-databases.html)
 
 
 

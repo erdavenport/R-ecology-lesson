@@ -8,12 +8,12 @@ navbar:
       href: 01-intro-to-r.html
     - text: "Starting with data"
       href: 02-starting-with-data.html
+    - text: "Loops and functions"
+      href: 03-loops-and-functions.html
     - text: "Manipulating data frames"
-      href: 03-dplyr.html
+      href: 04-dplyr.html
     - text: "Visualizing data"
-      href: 04-visualization-ggplot2.html
-    - text: "R and SQL"
-      href: 05-r-and-databases.html
+      href: 05-visualization-ggplot2.html
     - text: "Code Handout"
       href: code-handout.R
   right:
