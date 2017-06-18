@@ -502,8 +502,6 @@ div.tocify {
 <li>How many species have been recorded during these surveys?</li>
 </ul>
 </blockquote>
-<p>&lt;!—</p>
-<p>—&gt;</p>
 </div>
 <div id="indexing-and-subsetting-data-frames" class="section level2">
 <h2>Indexing and subsetting data frames</h2>
@@ -540,13 +538,6 @@ surveys$species_id          <span class="co"># Result is a vector</span></code><
 <li><p>Combine <code>nrow()</code> with the <code>-</code> notation above to reproduce the behavior of <code>head(surveys)</code> keeping just the first through 6th rows of the surveys dataset.</p></li>
 </ol>
 </blockquote>
-<p>&lt;!—</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Answers
-surveys_200 &lt;-<span class="st"> </span>surveys[<span class="dv">200</span>, ]
-surveys_last &lt;-<span class="st"> </span>surveys[<span class="kw">nrow</span>(surveys), ]
-surveys_middle &lt;-<span class="st"> </span>surveys[<span class="kw">nrow</span>(surveys)/<span class="dv">2</span>, ]
-surveys_head &lt;-<span class="st"> </span>surveys[-<span class="kw">c</span>(<span class="dv">7</span>:<span class="kw">nrow</span>(surveys)),]</code></pre></div>
-<p>—&gt;</p>
 </div>
 <div id="factors" class="section level2">
 <h2>Factors</h2>
@@ -609,12 +600,6 @@ sex <span class="co"># after re-ordering</span></code></pre></div>
 <li>Now that we have renamed the factor level to “missing”, can you recreate the barplot such that “missing” is last (after “male”)?</li>
 </ul>
 </blockquote>
-<p>&lt;!—</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Answers
-<span class="kw">levels</span>(sex)[<span class="dv">2</span>:<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>)
-sex &lt;-<span class="st"> </span><span class="kw">factor</span>(sex, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;female&quot;</span>, <span class="st">&quot;male&quot;</span>, <span class="st">&quot;missing&quot;</span>))
-<span class="kw">plot</span>(sex)</code></pre></div>
-<p><img src="img/R-ecology-correct-order-1.png" width="672" /> —&gt;</p>
 </div>
 <div id="using-stringsasfactorsfalse" class="section level3">
 <h3>Using <code>stringsAsFactors=FALSE</code></h3>

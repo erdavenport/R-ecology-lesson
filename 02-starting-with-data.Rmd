@@ -144,15 +144,14 @@ objects besides `data.frame`.
 
 ```
 
-<!---
-```{r, echo=FALSE, purl=FALSE}
+
+```{r, echo=FALSE, purl=FALSE, include=FALSE}
 ## Answers
 ##
 ## * class: data frame
 ## * how many rows: 34786,  how many columns: 13
 ## * how many species: 48
 ```
---->
 
 
 ## Indexing and subsetting data frames
@@ -248,15 +247,14 @@ feature to get the full and correct column name.
 
 ```
 
-<!---
-```{r, purl=FALSE}
+```{r, purl=FALSE, echo=FALSE, include=FALSE}
 ## Answers
 surveys_200 <- surveys[200, ]
 surveys_last <- surveys[nrow(surveys), ]
 surveys_middle <- surveys[nrow(surveys)/2, ]
 surveys_head <- surveys[-c(7:nrow(surveys)),]
 ```
---->
+
 
 
 ## Factors
@@ -389,14 +387,12 @@ head(sex)
 ```
 
 
-<!---
-```{r correct-order, purl=FALSE}
+```{r correct-order, purl=FALSE, echo=FALSE, include=FALSE}
 ## Answers
 levels(sex)[2:3] <- c("female", "male")
 sex <- factor(sex, levels = c("female", "male", "missing"))
 plot(sex)
 ```
---->
 
 ### Using `stringsAsFactors=FALSE`
 
