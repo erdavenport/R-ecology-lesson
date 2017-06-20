@@ -139,14 +139,13 @@ Note that the final data frame is the leftmost part of this expression.
 >  Using pipes, subset the `survey` data to include individuals collected before
 >  1995 and retain only the columns `year`, `sex`, and `weight`.
 
-<!---
-```{r, eval=FALSE, purl=FALSE}
+```{r, eval=FALSE, purl=FALSE, include = FALSE, echo = FALSE}
 ## Answer
 surveys %>%
     filter(year < 1995) %>%
     select(year, sex, weight)
 ```
---->
+
 
     ```{r, eval=FALSE, purl=TRUE, echo=FALSE}
     ## Pipes Challenge:
@@ -205,8 +204,7 @@ symbol negates the result, so we're asking for everything that *is not* an `NA`.
 >
 >  **Hint**: think about how the commands should be ordered to produce this data frame!
 
-<!---
-```{r, eval=FALSE, purl=FALSE}
+```{r, eval=FALSE, purl=FALSE, echo=FALSE, include=FALSE}
 ## Answer
 surveys_hindfoot_half <- surveys %>%
     filter(!is.na(hindfoot_length)) %>%
@@ -214,7 +212,6 @@ surveys_hindfoot_half <- surveys %>%
     filter(hindfoot_half < 30) %>%
     select(species_id, hindfoot_half)
 ```
---->
 
     ```{r, eval=FALSE, purl=TRUE, echo=FALSE}
     ## Mutate Challenge:
@@ -338,7 +335,6 @@ counts the total number of records for each category.
 > using `group_by()` and `summarize()`? Hint: see `?n`.
 
 
-<!---
 ```{r, echo=FALSE, purl=FALSE}
 ## Answer 1
 surveys %>%
@@ -368,7 +364,7 @@ surveys %>%
   group_by(sex) %>%
   summarize(n = n())
 ```
---->
+
 
 ```{r, eval=FALSE, purl=TRUE, echo=FALSE}
 ## Tally Challenges:

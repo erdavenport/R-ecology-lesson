@@ -415,12 +415,6 @@ surveys_sml</code></pre></div>
 <h4 id="challenge" class="challenge">Challenge</h4>
 <p>Using pipes, subset the <code>survey</code> data to include individuals collected before 1995 and retain only the columns <code>year</code>, <code>sex</code>, and <code>weight</code>.</p>
 </blockquote>
-<p>&lt;!—</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Answer
-surveys %&gt;%
-<span class="st">    </span><span class="kw">filter</span>(year &lt;<span class="st"> </span><span class="dv">1995</span>) %&gt;%
-<span class="st">    </span><span class="kw">select</span>(year, sex, weight)</code></pre></div>
-<p>—&gt;</p>
 </div>
 <div id="mutate" class="section level2">
 <h2>Mutate</h2>
@@ -444,14 +438,6 @@ surveys %&gt;%
 <p>Create a new data frame from the <code>survey</code> data that meets the following criteria: contains only the <code>species_id</code> column and a new column called <code>hindfoot_half</code> containing values that are half the <code>hindfoot_length</code> values. In this <code>hindfoot_half</code> column, there are no <code>NA</code>s and all values are less than 30.</p>
 <p><strong>Hint</strong>: think about how the commands should be ordered to produce this data frame!</p>
 </blockquote>
-<p>&lt;!—</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Answer
-surveys_hindfoot_half &lt;-<span class="st"> </span>surveys %&gt;%
-<span class="st">    </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(hindfoot_length)) %&gt;%
-<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">hindfoot_half =</span> hindfoot_length /<span class="st"> </span><span class="dv">2</span>) %&gt;%
-<span class="st">    </span><span class="kw">filter</span>(hindfoot_half &lt;<span class="st"> </span><span class="dv">30</span>) %&gt;%
-<span class="st">    </span><span class="kw">select</span>(species_id, hindfoot_half)</code></pre></div>
-<p>—&gt;</p>
 </div>
 <div id="split-apply-combine-data-analysis-and-the-summarize-function" class="section level2">
 <h2>Split-apply-combine data analysis and the summarize() function</h2>
@@ -502,8 +488,6 @@ surveys_hindfoot_half &lt;-<span class="st"> </span>surveys %&gt;%
 <li><p>You saw above how to count the number of individuals of each <code>sex</code> using a combination of <code>group_by()</code> and <code>tally()</code>. How could you get the same result using <code>group_by()</code> and <code>summarize()</code>? Hint: see <code>?n</code>.</p></li>
 </ol>
 </blockquote>
-<p>&lt;!—</p>
-<p>—&gt;</p>
 </div>
 <div id="reshaping-with-gather-and-spread" class="section level2">
 <h2>Reshaping with gather and spread</h2>
